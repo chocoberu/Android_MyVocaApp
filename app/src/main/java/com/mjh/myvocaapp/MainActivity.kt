@@ -20,9 +20,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var listFragment: ListFragment
     private lateinit var settingFragment: SettingFragment
 
-    private val viewModel : MainViewModel by lazy {
+    /*private val viewModel : MainViewModel by lazy {
         ViewModelProvider(this, MainViewModel.Factory(application)).get(MainViewModel::class.java)
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,22 +34,22 @@ class MainActivity : AppCompatActivity() {
         listFragment = ListFragment()
         settingFragment = SettingFragment()
 
-        supportFragmentManager.beginTransaction().replace(R.id.VocaMainActivity, historyFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, historyFragment).commit()
         
         // 하단 탭
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it.itemId)
             {
                 R.id.tab_history -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.VocaMainActivity, historyFragment).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, historyFragment).commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.tab_vocalist -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.VocaMainActivity, listFragment).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, listFragment).commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 R.id.tab_setting -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.VocaMainActivity, settingFragment).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, settingFragment).commit()
                     return@setOnNavigationItemSelectedListener true
                 }
                 else -> {
@@ -59,24 +59,5 @@ class MainActivity : AppCompatActivity() {
             return@setOnNavigationItemSelectedListener true
         }
 
-        // 리사이클러뷰 레이아웃 매니저 설정
-        binding.recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        val adapter = VocaAdapter()
-        // 리사이클러뷰 어댑터 설정
-        binding.recyclerView.adapter = adapter
-
-        viewModel.apply {
-            getAll().observe(this@MainActivity, Observer {
-                adapter.updateItems(it)
-            })
-        }
-
-        // 플로팅액션바 클릭리스너 설정
-        binding.floatingActionButton.setOnClickListener {
-            Toast.makeText(this, "TODO : Add voca", Toast.LENGTH_SHORT).show()
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.insert(Voca("amused","흥겨운"))
-            }
-        }
     }
 }

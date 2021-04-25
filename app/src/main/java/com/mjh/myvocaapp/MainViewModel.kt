@@ -10,11 +10,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     //val loadingLiveData = MutableLiveData<Boolean>()
     //val itemsLiveData = MutableLiveData<List<Voca>>()
-    class Factory(val application: Application) : ViewModelProvider.Factory {
+    /*class Factory(val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return MainViewModel(application) as T
         }
-    }
+    }*/
 
     private val db = Room.databaseBuilder(application, AppDatabase::class.java,"VocaDB").build()
 
